@@ -40,7 +40,22 @@ $$
 
 where $\mathbb{G} = (G_1 , ... G_n)^T$ and $G_1,...,G_n$ are each a generator of $\mathbb{Z}$. In other words the first homology group will be given by the cokernel: $\mathbb{Z}^n/L\mathbb{Z}^n$
 
-One thing this algorithm does is calculate the homology by calculating the above cokernel. It does that in two steps, first it isolates the invertible part from the non invertible part of the matrix using only the allowed moves (Kirby moves), bringing it into a form $A\oplus 0_{n-l}$ where $A$ is a symmetric $l \times l$ invertible matrix. Then it calculates the cokernel of $A$: $\mathbb{Z}^l/A\mathbb{Z}^l$. 
+One thing this algorithm does is calculate the homology by calculating the above cokernel. It does that in two steps, first it isolates the invertible part from the non invertible part of the matrix using only the allowed moves (Kirby moves), bringing it into a form $A\oplus 0_{n-l}$ where $A$ is a symmetric $l \times l$ invertible matrix. Then it calculates the cokernel of $A$: $\mathbb{Z}^l/A\mathbb{Z}^l$.
+
+If you are unfamiliar with the last expression it just means that points of $\mathbb{Z}^l$ are considered equivalent if they differ by a point in $A\mathbb{Z}^l$ (if $x-y = A(z)$ for some $z \in \mathbb{Z}^l$. Our group then would consist of only the inequivalent elements. There are many ways to depict it visually but one of the most natural ones is to consider the action of the matrix $A$ on the "fundamental cell", that is, the square or cube or n-dimensional cube that is formed by the basis vectors $(1,0,...0),(0,1,...,0)...(0,0,...,1)$. The n-paralelliped object that we will get this way would contain the elements of the group. Then the equivalence relation could be displayed as follows: whenever we try to move to an element that is outside the boundary of our area, we instead get teleported to the opposite side as if there was a portal connecting the two sides. We can visualize that in two dimensions with an example, let's say we had the matrix:  
+(4,2)  
+(2,4)  
+And we wanted to see how this group would look like, visually it would look like this:
+
+![teleportation](https://i.imgur.com/eyAD75F.png)
+
+with the blue and orange parts acting as portals. Of course not shown explicitly in the figure there would also be "portals" connecting the top and bottom side of the shape. In order to find and calculate the properties of the above group we had to be able to do the following operations:
+
+- Find a way to show which points are within the group. (done by is_within function)
+- Find all the unique points that are in the group. (done by set_of_points_within function)
+- Find the cyclic group decomposition of our group. (done by compute_cokernel and its subordinate functions)
+
+For the last point we need to say that since $\mathbb{Z}^l/A\mathbb{Z}^l$ is a finite abelian group then it must have a decomposition into a direct sum of cyclic groups: $\mathbb{Z}\_{p_1} \oplus \mathbb{Z}\_{p_2} \oplus ... \oplus \mathbb{Z}\_{p_k}$ where $p_i$ divides $p_{i+1}$. The essence of the algorithm is that it tries to find an element in group of order $p_k$ (meaning an element that if you add it to itself $p_k$ times it will be equivalent to $0$) and then uses it to generate a \mathbb{Z}\_{p_k} type group. Then it considers the original group quotient with the group we generated and repeats the process. The result should be a list of numbers that represent the coefficients of the $\mathbb{Z}_{p_i}$ groups. In addittion, we will get their generators for free. 
 
 more will be added on the above explanation
 
