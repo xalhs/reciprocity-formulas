@@ -15,24 +15,26 @@ $$
 Where $L$ and $K$ are bilinear forms, i.e. symmetric matrices (also $K$ is even which means its diagonal elements are even) and $A$ and $H$ are the "invertible parts"
 of $L$ and $K$. Also $n$ is the dimension of $L$, $m$ the dimension of $K$, $l$ is the rank of $L$ and $r$ is the rank of $K$.
 
+This can be done with the reciprocity_formula function where you pass as arguments the matrices $L$ and $K$. The first output will be the left-hand-side of the equation above and the second output will be the right-hand-side.
+
 however, its use can be much simpler than that:
 
 At the base level it can compute gauss sums like: $$\sum_{n=0}^{p-1} \mathrm{exp}(i \pi q n^2 /p)$$
 
 It can also do the following operations:
-- Isolate the invertible part of a symmetric matrix 
-- Calculate the cokernel of a symmetric matrix on the field of integers (i.e. the quotient group $\mathbb{Z}^n/L\mathbb{Z}^n$)
-- Split the above group into a direct sum of cyclic groups
-- Calculate a linking form that corresponds to a given (linking) matrix
-- Calculate the integer linking matrix of a lens space L(p,q) (using Saveliev's method)
-- Perform the second Kirby move on symmetric (linking) matrices
+- Isolate the invertible part of a symmetric matrix (while keeping the symmetry) using the function split_matrix
+- Calculate the cokernel of a symmetric matrix on the field of integers (i.e. the quotient group $\mathbb{Z}^n/L\mathbb{Z}^n$) with the function compute_cokernel
+- Split the finite part of the above group into a direct sum of cyclic groups (using the same function)
+- Calculate a linking form that corresponds to a given (linking) matrix (again with the same function)
+- Calculate the integer linking matrix of a lens space L(p,q) (using Saveliev's method) with the function linking_mat_of_lens_space
+- Perform the second Kirby move on symmetric (linking) matrices with the function K2
 
 # Theory
 
 
 ## Homology
 
-very briefly, we can create a manifold by acting on a set of curves inside $S^3$. These curves are partially described by what is called the linking matrix, which is a symmetric matrix. Now there is a way of obtaining the homology if the manifold by looking at the linking matrix. Suppose that $L$ is an $n\times n$ linking matrix then the first homology group can be written as:
+Very briefly, we can create a manifold by acting on a set of curves inside $S^3$. These curves are partially described by what is called the linking matrix, which is a symmetric matrix. Now there is a way of obtaining the homology if the manifold by looking at the linking matrix. Suppose that $L$ is an $n\times n$ linking matrix then the first homology group can be written as:
 
 $$ 
 H_1 = \langle G_1 ,..., G_n | L\cdot \mathbb{G} = 0 \rangle,
@@ -55,7 +57,14 @@ with the blue and orange parts acting as portals. Of course not shown explicitly
 - Find all the unique points that are in the group. (done by set_of_points_within function)
 - Find the cyclic group decomposition of our group. (done by compute_cokernel and its subordinate functions)
 
-For the last point we need to say that since $\mathbb{Z}^l/A\mathbb{Z}^l$ is a finite abelian group then it must have a decomposition into a direct sum of cyclic groups: $\mathbb{Z}\_{p_1} \oplus \mathbb{Z}\_{p_2} \oplus ... \oplus \mathbb{Z}\_{p_k}$ where $p_i$ divides $p_{i+1}$. The essence of the algorithm is that it tries to find an element in group of order $p_k$ (meaning an element that if you add it to itself $p_k$ times it will be equivalent to $0$) and then uses it to generate a \mathbb{Z}\_{p_k} type group. Then it considers the original group quotient with the group we generated and repeats the process. The result should be a list of numbers that represent the coefficients of the $\mathbb{Z}_{p_i}$ groups. In addittion, we will get their generators for free. 
+For the last point we need to say that since $\mathbb{Z}^l/A\mathbb{Z}^l$ is a finite abelian group then it must have a decomposition into a direct sum of cyclic groups: $\mathbb{Z}\_{p_1} \oplus \mathbb{Z}\_{p_2} \oplus ... \oplus \mathbb{Z}\_{p_k}$ where $p_i$ divides $p_{i+1}$. The essence of the algorithm is that it tries to find an element in group of order $p_k$ (meaning an element that if you add it to itself $p_k$ times it will be equivalent to $0$) and then uses it to generate a $\mathbb{Z}\_{p_k}$ type group. Then it considers the original group quotient with the group we generated and repeats the process. The result should be a list of numbers that represent the coefficients of the $\mathbb{Z}_{p_i}$ groups. In addittion, we will get their generators for free. 
+
+As it is evident, another main function of this algorithm is the compute_cokernel one. It takes one input of a symmetric matrix and gives five outputs. These are:
+1) a list like the following $\[p_k , p_{k-1},...,p_1\]$
+2) the list of generators of the groups $\mathbb{Z}_{p_k} ... \mathbb{Z}_1$
+3) the linking form of the matrix in the basis of the above generators
+4) the corank of the matrix (i.e. the dimension minus the rank which corresponds to the number of (infinite) $\mathbb{Z}$ groups in its decomposition)
+5) the reduced matrix which is the invertible of the matrix after we separate invertible and non invertible
 
 more will be added on the above explanation
 
