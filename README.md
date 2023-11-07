@@ -34,7 +34,7 @@ It can also do the following operations:
 
 ## Homology
 
-Very briefly, we can create a manifold by acting on a set of curves inside $S^3$. These curves are partially described by what is called the linking matrix, which is a symmetric matrix. Now there is a way of obtaining the homology if the manifold by looking at the linking matrix. Suppose that $L$ is an $n\times n$ linking matrix then the first homology group can be written as:
+Very briefly, we can create a manifold by acting on a set of curves inside $S^3$. These curves are partially described by what is called the linking matrix, which is a symmetric matrix. Now there is a way of obtaining the homology of the manifold by looking at the linking matrix. Suppose that $L$ is an $n\times n$ linking matrix then the first homology group can be written as:
 
 $$ 
 H_1 = \langle G_1 ,..., G_n | L\cdot \mathbb{G} = 0 \rangle,
@@ -44,7 +44,7 @@ where $\mathbb{G} = (G_1 , ... G_n)^T$ and $G_1,...,G_n$ are each a generator of
 
 One thing this algorithm does is calculate the homology by calculating the above cokernel. It does that in two steps, first it isolates the invertible part from the non invertible part of the matrix using only the allowed moves (Kirby moves), bringing it into a form $A\oplus 0_{n-l}$ where $A$ is a symmetric $l \times l$ invertible matrix. Then it calculates the cokernel of $A$: $\mathbb{Z}^l/A\mathbb{Z}^l$.
 
-If you are unfamiliar with the last expression it just means that points of $\mathbb{Z}^l$ are considered equivalent if they differ by a point in $A\mathbb{Z}^l$ (if $x-y = A(z)$ for some $z \in \mathbb{Z}^l$. Our group then would consist of only the inequivalent elements. There are many ways to depict it visually but one of the most natural ones is to consider the action of the matrix $A$ on the "fundamental cell", that is, the square or cube or n-dimensional cube that is formed by the basis vectors $(1,0,...0),(0,1,...,0)...(0,0,...,1)$. The n-paralelliped object that we will get this way would contain the elements of the group. Then the equivalence relation could be displayed as follows: whenever we try to move to an element that is outside the boundary of our area, we instead get teleported to the opposite side as if there was a portal connecting the two sides. We can visualize that in two dimensions with an example, let's say we had the matrix:  
+If you are unfamiliar with the last expression it just means that points of $\mathbb{Z}^l$ are considered equivalent if they differ by a point in $A\mathbb{Z}^l$ (if $x-y = A(z)$ for some $z \in \mathbb{Z}^l$). Our group then would consist of only the inequivalent elements. There are many ways to depict it visually but one of the most natural ones is to consider the action of the matrix $A$ on the "fundamental cell", that is, the square or cube or n-dimensional cube that is formed by the basis vectors $(1,0,...0),(0,1,...,0)...(0,0,...,1)$. The n-paralelliped object that we will get this way would contain the elements of the group. Then the equivalence relation could be displayed as follows: whenever we try to move to an element that is outside the boundary of our area, we instead get teleported to the opposite side as if there was a portal connecting the two sides. We can visualize that in two dimensions with an example, let's say we had the matrix:  
 (4,2)  
 (2,4)  
 And we wanted to see how this group would look like, visually it would look like this:
