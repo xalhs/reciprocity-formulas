@@ -132,7 +132,8 @@ def new_quot_space(dict_of_classes_org ,repr_org , new_equiv ,order_of_equiv):
             repr.remove(rep_found)
         min_mag = 0
         for j in classes_of_repr[num_of_classes]:
-            new_classes[num_of_classes].append(dict_of_classes[tuple(j)])
+           #new_classes[num_of_classes].append(dict_of_classes[tuple(j)])
+            new_classes[num_of_classes] += dict_of_classes[tuple(j)] #the above caused an infinite loop with larger matrices, this fixes the bug
             vec_mag = vector_magnitude(j)
             if vec_mag ==0:
                 min_vec = j
